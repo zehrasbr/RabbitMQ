@@ -24,6 +24,7 @@ namespace RabbitMQ.subscriber
             //false yaparsak her bir subscriber'a beşer mesaj gönderir.
             channel.BasicQos(0,5,false);
 
+
             var consumer = new EventingBasicConsumer(channel);
 
             //autoAck false verirsek RabbitMQ subscriber'a mesaj gönderdiğinde bu mesaj doğru veya yanlış işlensede bu kuyruktan siler.
