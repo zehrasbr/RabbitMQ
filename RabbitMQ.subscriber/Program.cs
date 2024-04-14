@@ -20,15 +20,21 @@ namespace RabbitMQ.subscriber
             //eğer oluşturacaksak publisher kısmı ile aynı olmalı kuyruk.
             //channel.QueueDeclare("hello-queue", true, false, false);
 
+            //true yaparsak kaç tane subscriber varsa hepsine toplam 5 mesaj gönderir.
+            //false yaparsak her bir subscriber'a beşer mesaj gönderir.
+            channel.BasicQos(0,5,false);
+
             var consumer = new EventingBasicConsumer(channel);
 
             //autoAck false verirsek RabbitMQ subscriber'a mesaj gönderdiğinde bu mesaj doğru veya yanlış işlensede bu kuyruktan siler.
             //autoAck true verirsek gelen mesajı doğru bir şekilde işlerse kuyruktan silinmesi için haber eder.
-            channel.BasicConsume("hello-queue", true, consumer);
+            channel.BasicConsume("hello-queue", false, consumer);
             consumer.Received += (object sender, BasicDeliverEventArgs e) =>
             {
                 var message = Encoding.UTF8.GetString(e.Body.ToArray());
                 Console.WriteLine("Gelen Mesaj:" + message);
+                //oluşturulan tagı rabbitmq ya gönderiyor, ulaştıktan sonra kuyruktan siler.
+                channel.BasicAck(e.DeliveryTag,false);
             };
             Console.ReadLine();
         }

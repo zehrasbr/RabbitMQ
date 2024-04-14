@@ -1,5 +1,6 @@
 ﻿using RabbitMQ.Client;
 using System;
+using System.Linq;
 using System.Text;
 
 namespace RabbitMQ.publisher
@@ -21,11 +22,15 @@ namespace RabbitMQ.publisher
             //Eğer sadece bulunduğu kanala bağlanmak istesek true olmalı.  
             //autoDelete otomatik silinmesini istemediğimiz için false.
             channel.QueueDeclare("hello-queue", true, false, false);
-
-            string message = "hello world";
-            var messageBody = Encoding.UTF8.GetBytes(message);
-            channel.BasicPublish(string.Empty, "hello-queue", null, messageBody);
-            Console.WriteLine("Mesaj gönderildi.");
+            //tek sefer çalıştığında 50 kere mesaj yollar.
+            Enumerable.Range(1, 50).ToList().ForEach(x =>
+            {
+                string message = $"Message {x}";
+                var messageBody = Encoding.UTF8.GetBytes(message);
+                channel.BasicPublish(string.Empty, "hello-queue", null, messageBody);
+                Console.WriteLine($"Mesaj gönderilmiştir: {message}");
+            });
+       
             Console.ReadLine();
         }
     }
