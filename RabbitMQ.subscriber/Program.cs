@@ -2,6 +2,7 @@
 using RabbitMQ.Client.Events;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace RabbitMQ.subscriber
 {
@@ -33,6 +34,7 @@ namespace RabbitMQ.subscriber
             consumer.Received += (object sender, BasicDeliverEventArgs e) =>
             {
                 var message = Encoding.UTF8.GetString(e.Body.ToArray());
+                Thread.Sleep(1500);
                 Console.WriteLine("Gelen Mesaj:" + message);
                 //oluşturulan tagı rabbitmq ya gönderiyor, ulaştıktan sonra kuyruktan siler.
                 channel.BasicAck(e.DeliveryTag,false);
