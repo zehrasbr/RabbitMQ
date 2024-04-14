@@ -16,6 +16,7 @@ namespace RabbitMQ.publisher
             //bu kanal üzerinden rabbitmq ile haberleşebiliriz.
             var channel = connection.CreateModel();
 
+            //kuyruğu burada oluştururuz.
             //true yaparsak rabbitmq'ya restart atsakta kuyruklar kaybolmaz.
             //subscriber'a bağlanmak için(farklı kanallardan bağlanmak için) false yaptık.
             //Eğer sadece bulunduğu kanala bağlanmak istesek true olmalı.  
