@@ -25,7 +25,6 @@ namespace RabbitMQ.subscriber
             //autoAck false verirsek RabbitMQ subscriber'a mesaj gönderdiğinde bu mesaj doğru veya yanlış işlensede bu kuyruktan siler.
             //autoAck true verirsek gelen mesajı doğru bir şekilde işlerse kuyruktan silinmesi için haber eder.
             channel.BasicConsume("hello-queue", true, consumer);
-
             consumer.Received += (object sender, BasicDeliverEventArgs e) =>
             {
                 var message = Encoding.UTF8.GetString(e.Body.ToArray());
