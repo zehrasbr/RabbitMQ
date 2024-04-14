@@ -30,7 +30,6 @@ namespace RabbitMQ.subscriber
                 var message = Encoding.UTF8.GetString(e.Body.ToArray());
                 Console.WriteLine("Gelen Mesaj:" + message);
             };
-                
             Console.ReadLine();
         }
     }
