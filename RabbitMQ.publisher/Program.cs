@@ -21,13 +21,17 @@ namespace RabbitMQ.publisher
             //subscriber'a bağlanmak için(farklı kanallardan bağlanmak için) false yaptık.
             //Eğer sadece bulunduğu kanala bağlanmak istesek true olmalı.  
             //autoDelete otomatik silinmesini istemediğimiz için false.
-            channel.QueueDeclare("hello-queue", true, false, false);
+            //channel.QueueDeclare("hello-queue", true, false, false);
+
+            //exchange'ı restart attığımızda kaybolmasını istemiyoruz bu yüzden true.
+            channel.ExchangeDeclare("logs-fanout",durable:true,type:ExchangeType.Fanout);
+
             //tek sefer çalıştığında 50 kere mesaj yollar.
             Enumerable.Range(1, 50).ToList().ForEach(x =>
             {
-                string message = $"Message {x}";
+                string message = $"log {x}";
                 var messageBody = Encoding.UTF8.GetBytes(message);
-                channel.BasicPublish(string.Empty, "hello-queue", null, messageBody);
+                channel.BasicPublish("logs-fanout", "", null, messageBody);
                 Console.WriteLine($"Mesaj gönderilmiştir: {message}");
             });
        
