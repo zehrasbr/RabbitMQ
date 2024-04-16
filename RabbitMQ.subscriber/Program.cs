@@ -21,7 +21,10 @@ namespace RabbitMQ.subscriber
             //eğer oluşturacaksak publisher kısmı ile aynı olmalı kuyruk.
             //channel.QueueDeclare("hello-queue", true, false, false);
 
-            var randomQueueName = channel.QueueDeclare().QueueName;
+            var randomQueueName = "log-database-save-queue"; //channel.QueueDeclare().QueueName;
+
+            //fiziksel olarak sabit diskte kaydedilsin,başka kanallardan kuyruğa bağlanılsın, otomatik silinmesin.
+            channel.QueueDeclare(randomQueueName, true, false, false);
 
             //uygulama her ayağa kalktığında ilgili kuyruk oluşacak. uygulama down olduğunda kuyruk silinecek.
             channel.QueueBind(randomQueueName, "logs-fanout", "", null);
